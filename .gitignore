@@ -1,0 +1,3 @@
+*.o
+.*.sw?
+ws2812b_atmega328p_host
