@@ -1,4 +1,5 @@
 #include <unistd.h>
+#include <stdio.h>
 #include "leds.h"
 #include "power.h"
 
@@ -15,9 +16,15 @@ void on(int fd, int num) {
         leds[i].b = 0;
     }
     write_leds(fd, leds, NUM_LEDS);
+    while(1) {
+        write_leds(fd, leds, 0);
+        sleep(1);
+    }
 }
 
 void off(int fd) {
     unsigned char t = 0xFE;
-    write(fd, &t, 1);
+    if(write(fd, &t, 1) != 1) {
+        fprintf(stderr, "(probably) failed to turn off the psu\n!");
+    }
 }

@@ -1,2 +1,0 @@
-TESTING!
-(heavily) optimize left rotation: it's a shift register in hardware. left shift is literally adding only the new information. needs µC changes

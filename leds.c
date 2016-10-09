@@ -12,7 +12,7 @@ void rotate(long offset, struct led* leds, size_t num) {
         offset *= -1;
         offset = offset % num;
         temp = memcpy(temp, leds, (size_t) offset*struct_size);
-        for(long i=0; i < num-offset; ++i) {
+        for(size_t i=0; i < num-offset; ++i) {
             leds[i] = leds[i+offset];
         }
         memcpy(leds+num-offset, temp, (size_t) offset*struct_size);
@@ -27,11 +27,13 @@ void rotate(long offset, struct led* leds, size_t num) {
 }
 
 void write_leds(int fd, struct led* leds, size_t num) {
-    size_t num_bytes = num*sizeof(struct led);
+    int num_bytes = num*sizeof(struct led);
     if(write(fd, leds, num_bytes) != num_bytes) {
         fprintf(stderr, "Some stuff was not written to the serial port…\n");
     }
     uint8_t t = 0xFF;
-    write(fd, &t, 1);
+    if(write(fd, &t, 1) != 1) {
+        fprintf(stderr, "Failed to write finish frame \"opcode\"\n");
+    }
     fsync(fd);
 }
