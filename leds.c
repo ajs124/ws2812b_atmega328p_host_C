@@ -5,7 +5,7 @@
 #include "leds.h"
 
 void rotate(long offset, struct led* leds, size_t num) {
-    if(offset == 0) return;
+    if(offset % num == 0) return;
     size_t struct_size = sizeof(struct led);
     struct led* temp = malloc((size_t) labs(offset)*struct_size);
     if(offset < 0) {
